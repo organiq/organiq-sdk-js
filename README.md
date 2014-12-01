@@ -62,9 +62,8 @@ It is convenient to run a development version of the Organiq server locally when
 
 When using a local server, it is necessary to specify its location using a configuration file in the application directory. A simple configuration file can be created like this:
 
-    $ organiq init --apiRoot http://<ip-address>:<port>  # Create organiq.json
-
-**Important**: Use the actual IP address of your development machine (e.g., "10.1.1.1") and not "localhost". The Tessel device has its own IP address and so will not resolve "localhost" to your development machine (where the Organiq server is running).
+    $ organiq init --local-dev
+    Initialized organiq.json with API root: http://<ip-address>:1340
 
 
 ### Watch it Blink!

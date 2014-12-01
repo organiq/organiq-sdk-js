@@ -9,7 +9,7 @@ var argv = require('minimist')(process.argv.slice(2));
 var fs = require('fs');
 var Router = require('./router.js')
 
-var VERSION = "0.0.1";
+var VERSION = require('../package.json').version;
 
 // The default apiRoot is 'http://api.organiq.io'. We look for an override
 // in the following places:
@@ -45,6 +45,24 @@ function getApiRoot() {
 
 var apiRoot = getApiRoot();
 
+function _getLocalExternalIPAddress() {
+    var os = require('os');
+    var ifaces = os.networkInterfaces();
+    var ip;
+    function _g(details) {
+        if ((details.family === 'IPv4') && (!details.internal)) {
+          ip = details.address;
+          return false;
+        }
+        return true;
+    }
+    for (var dev in ifaces) {
+      if (!ifaces.hasOwnProperty(dev)) { continue; }
+      ifaces[dev].every(_g);
+    }
+    return ip;
+}
+
 if ( process.argv[0] === 'node' ) {
   process.argv.shift();
 }
@@ -66,6 +84,18 @@ if ( process.argv.length < 2 ) {
 var command = process.argv[1];
 switch( command ) {
   case 'init':
+    var useLocalDevServer = argv['local-dev'];
+    if (useLocalDevServer) {
+      // find an external IPv4 address for the local host
+      var ip = _getLocalExternalIPAddress();
+      if (ip) {
+        apiRoot = 'http://' + ip + ':1340';
+        console.log('Initialized organiq.json with API root: ' + apiRoot);
+      } else {
+        console.error('Unable to determine external IP address. Use --api-root to specify it explicitly.');
+        process.exit(1);
+      }
+    }
     writePackageData(apiRoot);
     break;
   case 'server':

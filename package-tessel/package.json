@@ -1,0 +1,23 @@
+{
+  "name": "organiq-tessel",
+  "version": "0.0.1",
+  "description": "Minimal Organiq APIs for deploying to Tessel devices.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/organiq/nodejs.git"
+  },
+  "author": {
+    "name": "Myk Willis",
+    "email": "myk@mykwillis.com"
+  },
+  "bugs": {
+    "url": "https://github.com/organiq/nodejs/issues"
+  },
+  "homepage": "https://github.com/organiq/nodejs",
+  "dependencies": {
+    "wamp-tessel": ">= 0.0.2",
+    "when": "~3.4.6"
+  }
+}

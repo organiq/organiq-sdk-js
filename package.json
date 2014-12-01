@@ -1,0 +1,36 @@
+{
+  "name": "organiq",
+  "version": "0.0.1",
+  "description": "Organiq Node.js module and command line interface (CLI).",
+  "main": "./src/index.js",
+  "bin": {
+    "organiq": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "mocha --recursive --check-leaks -r should"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/organiq/nodejs.git"
+  },
+  "author": {
+    "name": "Myk Willis",
+    "email": "myk@mykwillis.com"
+  },
+  "bugs": {
+    "url": "https://github.com/organiq/nodejs/issues"
+  },
+  "homepage": "https://github.com/organiq/nodejs",
+  "dependencies": {
+    "minimist": "~1.1.0",
+    "superagent": "~0.18.2",
+    "wamp-tessel": ">= 0.0.2",
+    "wamp.rt": "git://github.com/mykwillis/wamp.rt.git#organiq",
+    "when": "~3.4.6"
+  },
+  "devDependencies": {
+    "mocha": "^1.21.4",
+    "should": "~4.1.0",
+    "sinon": "~1.10.3"
+  }
+}

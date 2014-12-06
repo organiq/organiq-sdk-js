@@ -1,7 +1,7 @@
 {
   "name": "organiq",
   "version": "0.0.2",
-  "description": "Organiq Node.js module and command line interface (CLI).",
+  "description": "JavaScript library and CLI for Organiq.",
   "main": "./src/index.js",
   "bin": {
     "organiq": "./bin/cli.js"
@@ -11,16 +11,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/organiq/nodejs.git"
+    "url": "git://github.com/organiq/organiq-js.git"
   },
   "author": {
     "name": "Myk Willis",
     "email": "myk@mykwillis.com"
   },
   "bugs": {
-    "url": "https://github.com/organiq/nodejs/issues"
+    "url": "https://github.com/organiq/organiq-js/issues"
   },
-  "homepage": "https://github.com/organiq/nodejs",
+  "homepage": "https://github.com/organiq/organiq-js",
   "dependencies": {
     "minimist": "~1.1.0",
     "superagent": "~0.18.2",

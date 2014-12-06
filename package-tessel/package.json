@@ -1,21 +1,21 @@
 {
   "name": "organiq-tessel",
   "version": "0.0.2",
-  "description": "Minimal Organiq APIs for deploying to Tessel devices.",
+  "description": "JavaScript library for Organiq on Tessel.",
   "main": "index.js",
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git://github.com/organiq/nodejs.git"
+    "url": "git://github.com/organiq/organiq-js.git"
   },
   "author": {
     "name": "Myk Willis",
     "email": "myk@mykwillis.com"
   },
   "bugs": {
-    "url": "https://github.com/organiq/nodejs/issues"
+    "url": "https://github.com/organiq/organiq-js/issues"
   },
-  "homepage": "https://github.com/organiq/nodejs",
+  "homepage": "https://github.com/organiq/organiq-js",
   "dependencies": {
     "wamp-tessel": ">= 0.0.2",
     "when": "~3.4.6"

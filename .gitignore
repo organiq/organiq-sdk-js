@@ -30,3 +30,4 @@ node_modules
 
 # Organiq-specific configuration files
 organiq.json
+.DS_Store

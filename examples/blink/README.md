@@ -3,13 +3,15 @@
 
 This example demonstrates how to expose device functionality for use by remote applications using Organiq. Specifically, it shows how to expose an LED on a Tessel microcontroller and manipulate it from an external application.
 
-Before running the example, you should start a local Organiq server and create a configuration file:
+A walkthrough of this example can be found at <http://organiq-tessel.readthedocs.org/en/latest/hello/>.
+
+Before running the example, you should start a local Organiq server and create an `organiq.json` configuration file:
 
     # Start development Organiq server on default port 1340
     organiq server start
     
     # Create an organiq.json file specifying location of server
-    organiq init --apiRoot http://<ip-address>:<port>/
+    organiq init --local-dev
 
 You can then run the example like this:
 

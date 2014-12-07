@@ -17,7 +17,7 @@ Here's a (complete) program for Tessel that uses the Organiq SDK to expose the a
         toggleLed: function() { tessel.led[0].toggle(); }
         });
 
-Here's a Node.js application that starts the LED blinking:
+Here's a Node.js application that starts the Tessel's LED blinking from anywhere on the web:
 
     var organiq = require('organiq');
     function startBlinking(device) {

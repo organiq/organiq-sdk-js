@@ -11,20 +11,23 @@ The Organiq Software Development Kit (SDK) for JavaScript contains library code,
 
 Here's a (complete) program for Tessel that uses the Organiq SDK to expose the ability to turn on and off the device LED from the web:
 
-    var tessel = require('tessel');
-    var organiq = require('organiq-tessel');
-    organiq.registerDevice('Blinker', {
-        toggleLed: function() { tessel.led[0].toggle(); }
-        });
+```JavaScript
+var tessel = require('tessel');
+var organiq = require('organiq-tessel');
+organiq.registerDevice('Blinker', {
+    toggleLed: function() { tessel.led[0].toggle(); }
+    });
+```
 
 Here's a Node.js application that starts the Tessel's LED blinking from anywhere on the web:
 
-    var organiq = require('organiq');
-    function startBlinking(device) {
-        setInterval(function() { device.toggleLed(); }, 500);
-    }
-    organiq.getDevice('Blinker').then(startBlinking);
-
+```JavaScript
+var organiq = require('organiq');
+function startBlinking(device) {
+    setInterval(function() { device.toggleLed(); }, 500);
+}
+organiq.getDevice('Blinker').then(startBlinking);
+```
 
 ## Documentation
 

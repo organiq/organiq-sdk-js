@@ -6,16 +6,16 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git://github.com/organiq/organiq-js.git"
+    "url": "git://github.com/organiq/organiq-sdk-js.git"
   },
   "author": {
     "name": "Myk Willis",
     "email": "myk@mykwillis.com"
   },
   "bugs": {
-    "url": "https://github.com/organiq/organiq-js/issues"
+    "url": "https://github.com/organiq/organiq-sdk-js/issues"
   },
-  "homepage": "https://github.com/organiq/organiq-js",
+  "homepage": "https://github.com/organiq/organiq-sdk-js",
   "dependencies": {
     "wamp-tessel": ">= 0.0.2",
     "when": "~3.4.6"

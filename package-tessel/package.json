@@ -1,6 +1,6 @@
 {
   "name": "organiq-tessel",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "JavaScript library for Organiq on Tessel.",
   "main": "index.js",
   "scripts": {},

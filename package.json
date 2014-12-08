@@ -1,7 +1,7 @@
 {
   "name": "organiq",
-  "version": "0.0.2",
-  "description": "JavaScript library and CLI for Organiq.",
+  "version": "0.0.3",
+  "description": "Organiq SDK for JavaScript.",
   "main": "./src/index.js",
   "bin": {
     "organiq": "./bin/cli.js"

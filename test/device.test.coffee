@@ -123,6 +123,12 @@ describe 'DeviceWrapper', ->
       v = ld.get 'notInImpl'
       v.should.equal 'you there?'
 
+    it 'fails if implementation does not implement schema method', ->
+      'f': { type: 'unknown' }
+      s = { methods: { 'f': { type: 'unknown' } } }
+      d = {}
+
+      (-> new DeviceWrapper d, s).should.throw /Required method.*not implemented/
 
     # if a property/method/event is not present in the schema, it should fail
     # when we try to access it through the wrapper.
@@ -141,6 +147,23 @@ describe 'DeviceWrapper', ->
 
       testDevice.__emitter.emit 'ignoredEvent', { IDoNot: 'see this' }
       testDevice.__emitter.emit 'swoosh', { apple: 'red', banana: 'yellow' }
+
+
+  describe 'property validation', ->
+    ld = null
+    beforeEach ->
+      testDevice =
+        numberProp: 42
+        stringProp: 'stringValue'
+        booleanProp: true
+
+      ld = new DeviceWrapper testDevice
+
+    it 'rejects get of invalid property', ->
+      (-> ld.get 'badProp').should.throw /invalid/
+
+    it 'rejects set of invalid property', ->
+      (-> ld.set 'badProp', 'value').should.throw /invalid/
 
 
   # Every time a property is updated with the DeviceWrapper setter, a 'put'
@@ -186,6 +209,9 @@ describe 'DeviceWrapper', ->
         done()
       testDevice.numberProp = 47
 
+  #
+  # Method Invocations
+  #
   describe 'method invocations', ->
     it 'handles void argument list', ->
       testDevice =
@@ -207,6 +233,29 @@ describe 'DeviceWrapper', ->
       ld = new DeviceWrapper testDevice
       result = ld.invoke('f', ['larry', 'moe', 'curly'])
       result.should.deep.equal { args: ['larry', 'moe', 'curly'] }
+
+  describe 'describe()', ->
+    it 'returns device schema', ->
+      testSchema =
+        properties: {
+          'numberProp': { type: 'number', constructor: Number },
+          'stringProp': { type: 'string', constructor: String },
+          'booleanProp': { type: 'boolean', constructor: Boolean },
+          'notInImpl': { type: 'string', constructor: String }
+        }
+        methods: {
+          'f': { type: 'unknown' }
+        }
+        events: {
+          'swoosh': {}
+        }
+      testDevice = { f: -> }
+
+      ld = new DeviceWrapper testDevice, testSchema
+      s = ld.describe()
+      s.should.deep.equal testSchema
+
+
 
 
 

@@ -3,7 +3,7 @@
 
 var argv = require('minimist')(process.argv.slice(2));
 var fs = require('fs');
-var Router = require('./router.js')
+var Router = require('./gateway.js');
 
 var VERSION = require('../package.json').version;
 
@@ -44,7 +44,7 @@ var apiRoot = getApiRoot();
 function _getLocalExternalIPAddress() {
     var os = require('os');
     var ifaces = os.networkInterfaces();
-    var ip;
+    var ip = null;
     function _g(details) {
         if ((details.family === 'IPv4') && (!details.internal)) {
           ip = details.address;

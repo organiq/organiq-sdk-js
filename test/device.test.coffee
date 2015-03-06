@@ -2,8 +2,13 @@ DeviceWrapper = require '../lib/device'
 util = require('util')
 EventEmitter = require('events').EventEmitter
 
-describe 'DeviceWrapper module', ->
+describe 'DeviceWrapper', ->
 
+  #
+  # Constructor
+  #
+  # Test proper operation of the function as constructor.
+  #
   describe 'constructor', ->
     testDevice = null
 
@@ -32,6 +37,7 @@ describe 'DeviceWrapper module', ->
       ld.schema.events.should.have.property 'gone'
 
 
+  # Schema Handling
   # Test proper handling of situations where a schema is given to the
   # constructor.
   describe 'schema handling', ->
@@ -44,7 +50,8 @@ describe 'DeviceWrapper module', ->
         properties: {
           'numberProp': { type: 'number', constructor: Number },
           'stringProp': { type: 'string', constructor: String },
-          'booleanProp': { type: 'boolean', constructor: Boolean }
+          'booleanProp': { type: 'boolean', constructor: Boolean },
+          'notInImpl': { type: 'string', constructor: String }
         }
         methods: {
           'f': { type: 'unknown' }
@@ -94,6 +101,9 @@ describe 'DeviceWrapper module', ->
       v.should.be.a('object')
       v.should.deep.equal { got: 'goombay', said: 'smash' }
 
+    # Set up an event handler for 'notify' of the wrapper. We should be
+    # invoked when the native object emits one of the events defined in
+    # the schema.
     it 'maps explicit events', (done) ->
       ld.on 'notify', (event, args) ->
         event.should.equal 'swoosh'
@@ -102,14 +112,39 @@ describe 'DeviceWrapper module', ->
 
       testDevice.__emitter.emit 'swoosh', { apple: 'red', banana: 'yellow' }
 
-    it 'does not map ignored props/methods/events', ->
+    # If a device implementation does not have an explicit declaration of a
+    # property defined in the schema, it should get one created.
+    it 'maps schema properties not in implementation', ->
+      v = ld.get 'notInImpl'
+      v.should.exist
+      v.should.be.a('string')
+
+      ld.set 'notInImpl', 'you there?'
+      v = ld.get 'notInImpl'
+      v.should.equal 'you there?'
+
+
+    # if a property/method/event is not present in the schema, it should fail
+    # when we try to access it through the wrapper.
+    it 'does not map ignored props/methods/events', (done) ->
       (-> ld.get 'ignoredProp').should.throw /invalid/
       (-> ld.get 'ignoredString').should.throw /invalid/
       (-> ld.invoke 'ignoredFunc').should.throw /invalid/
 
-      testDevice.on.should.not.have.been.calledWith 'ignoredEvent'
+      # Make sure ignoredEvent is not fired. We do this by emitting
+      # another event right after ignoredEvent and making sure that when the
+      # second event's handler is called we hadn't seen the first.
+      ld.on 'notify', (event, args) ->
+        event.should.not.equal 'ignoredEvent' # it will be 'swoosh'
+        testDevice.on.should.not.have.been.calledWith 'ignoredEvent'
+        done()
+
+      testDevice.__emitter.emit 'ignoredEvent', { IDoNot: 'see this' }
+      testDevice.__emitter.emit 'swoosh', { apple: 'red', banana: 'yellow' }
 
 
+  # Every time a property is updated with the DeviceWrapper setter, a 'put'
+  # event should be fired.
   describe 'metric recording', ->
     testDevice = null
     ld = null
@@ -142,6 +177,14 @@ describe 'DeviceWrapper module', ->
         value.should.equal false
         done()
       testDevice.booleanProp = false
+
+    it 'sets implementation property before invoking PUT', (done) ->
+      ld.on 'put', (metric, value) ->
+        metric.should.equal 'numberProp'
+        value.should.equal 47
+        testDevice.numberProp.should.equal 47
+        done()
+      testDevice.numberProp = 47
 
   describe 'method invocations', ->
     it 'handles void argument list', ->

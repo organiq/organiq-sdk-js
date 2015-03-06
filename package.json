@@ -1,13 +1,14 @@
 {
   "name": "organiq",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Organiq SDK for JavaScript.",
-  "main": "./src/index.js",
+  "main": "./lib/index.js",
   "bin": {
     "organiq": "./bin/cli.js"
   },
   "scripts": {
-    "test": "mocha --recursive --check-leaks -r should"
+    "test": "mocha",
+    "lint": "jshint ./lib"
   },
   "repository": {
     "type": "git",
@@ -22,15 +23,17 @@
   },
   "homepage": "https://github.com/organiq/organiq-sdk-js",
   "dependencies": {
-    "minimist": "~1.1.0",
-    "superagent": "~0.18.2",
-    "wamp-tessel": ">= 0.0.2",
-    "wamp.rt": "git://github.com/mykwillis/wamp.rt.git#organiq",
-    "when": "~3.4.6"
+    "organiq-core": "^0.0.2",
+    "debug": "^2.1.1",
+    "when": "^3.6.4"
   },
   "devDependencies": {
-    "mocha": "^1.21.4",
+    "chai": "^1.10.0",
+    "coffee-script": "^1.8.0",
+    "mocha": "^2.1.0",
     "should": "~4.1.0",
-    "sinon": "~1.10.3"
+    "sinon": "^1.12.2",
+    "sinon-chai": "^2.6.0",
+    "ws": "^0.7.0"
   }
 }

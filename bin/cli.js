@@ -1,10 +1,6 @@
 #!/usr/bin/env node
 // Copyright (c) 2014 Myk Willis & Company, LLC. All Rights Reserved.
-/*jshint node:true */
-/*jshint -W069*/ // ['{a}'] is better written in dot notation
-"use strict";
 
-var request = require('superagent');
 var argv = require('minimist')(process.argv.slice(2));
 var fs = require('fs');
 var Router = require('./router.js')

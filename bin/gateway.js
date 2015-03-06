@@ -41,7 +41,7 @@ function OrganiqDevelopmentServer(options) {
     .listen(port, function () {
       var host = http_server.address().address;
       var port = http_server.address().port;
-      console.log('Organiq Device Proxy at http://%s:%s', host, port);
+      debug('Organiq Device Proxy at http://%s:%s', host, port);
     });
 
   // Create the WebSocket application for handling WebSocket requests

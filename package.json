@@ -23,20 +23,20 @@
   },
   "homepage": "https://github.com/organiq/organiq-sdk-js",
   "dependencies": {
-    "organiq-core": "^0.0.2",
-    "debug": "^2.1.1",
-    "when": "^3.6.4"
+    "organiq-core": "^0.1.0",
+    "debug": "^2.1.2",
+    "when": "^3.7.2"
   },
   "devDependencies": {
     "body-parser": "^1.12.0",
-    "chai": "^1.10.0",
-    "coffee-script": "^1.8.0",
+    "chai": "^2.1.1",
+    "coffee-script": "^1.9.1",
     "express": "^4.12.2",
     "minimist": "^1.1.0",
     "mocha": "^2.1.0",
-    "should": "~4.1.0",
-    "sinon": "^1.12.2",
-    "sinon-chai": "^2.6.0",
-    "ws": "^0.7.0"
+    "should": "^5.1.0",
+    "sinon": "^1.13.0",
+    "sinon-chai": "^2.7.0",
+    "ws": "^0.7.1"
   }
 }

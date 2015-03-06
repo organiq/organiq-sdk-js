@@ -16,11 +16,12 @@ lib-cov
 pids
 logs
 results
+build
+logs
 
 npm-debug.log
 node_modules
 
-organiq.sln
-organiq.njsproj
-organiq.v12.suo
-.organiqcredentials
+organiq.json
+.DS_Store
+

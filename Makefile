@@ -5,8 +5,8 @@
 all: tessel-bundle browserify
 
 tessel-bundle:
-	cp ./src/*.js ./package-tessel/
+	cp ./lib/*.js ./package-tessel/
 
 browserify:
-	browserify -r ./src/index.js:organiq -o build/organiq.js
+	browserify -r ./lib/index.js:organiq -o build/organiq.js
 

@@ -234,6 +234,12 @@ describe 'DeviceWrapper', ->
       result = ld.invoke('f', ['larry', 'moe', 'curly'])
       result.should.deep.equal { args: ['larry', 'moe', 'curly'] }
 
+    it 'rejects invalid method', ->
+      testDevice =
+        f: (x) -> return x
+      ld = new DeviceWrapper testDevice
+      (-> ld.invoke('g', [1, 2, 3])).should.throw /invalid/
+
   describe 'describe()', ->
     it 'returns device schema', ->
       testSchema =
@@ -252,7 +258,7 @@ describe 'DeviceWrapper', ->
       testDevice = { f: -> }
 
       ld = new DeviceWrapper testDevice, testSchema
-      s = ld.describe()
+      s = ld.describe('schema')
       s.should.deep.equal testSchema
 
 

@@ -2,11 +2,12 @@
 ## npm install -g browserify
 ##
 
-all: tessel-bundle browserify
+all: tessel browserify
 
-tessel-bundle:
-	cp ./src/*.js ./package-tessel/
+tessel:
+	rm ./package-tessel/*.js
+	cp ./lib/*.js ./package-tessel/
 
 browserify:
-	browserify -r ./src/index.js:organiq -o build/organiq.js
+	browserify -r ./lib/index.js:organiq -o build/organiq.js
 

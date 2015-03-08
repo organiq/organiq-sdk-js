@@ -2,9 +2,10 @@
 ## npm install -g browserify
 ##
 
-all: tessel-bundle browserify
+all: tessel browserify
 
-tessel-bundle:
+tessel:
+	rm ./package-tessel/*.js
 	cp ./lib/*.js ./package-tessel/
 
 browserify:

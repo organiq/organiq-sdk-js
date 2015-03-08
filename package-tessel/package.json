@@ -17,9 +17,9 @@
   },
   "homepage": "https://github.com/organiq/organiq-sdk-js",
   "dependencies": {
-    "organiq-core": "organiq/organiq-core#cf790987",
     "debug": "^2.1.2",
-    "when": "^3.7.2",
-    "ws": "^0.7.1"
+    "nodejs-websocket": "^1.2.0",
+    "organiq-core": "organiq/organiq-core#dbbcee9e",
+    "when": "^3.7.2"
   }
 }

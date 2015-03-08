@@ -35,5 +35,5 @@ See <http://organiq-tessel.readthedocs.org/en/latest/> for documentation on usin
 
 
 
-Copyright (c) 2014 Myk Willis & Company, LLC. All Rights Reserved.
+Copyright (c) 2015 Myk Willis & Company, LLC. All Rights Reserved.
 

@@ -1,4 +1,5 @@
 # Organiq Software Development Kit for JavaScript
+[![Build Status](https://travis-ci.org/organiq/organiq-sdk-js.svg?branch=master)](https://travis-ci.org/organiq/organiq-sdk-js)
 
 Organiq is a platform for developing applications that interact with the real world.
 

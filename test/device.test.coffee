@@ -240,6 +240,21 @@ describe 'DeviceWrapper', ->
       ld = new DeviceWrapper testDevice
       (-> ld.invoke('g', [1, 2, 3])).should.throw /invalid/
 
+  describe 'event handling', ->
+    it 'translates native events to NOTIFY calls', (done) ->
+      testDevice =
+        events: ['e1']
+        __emitter: new EventEmitter
+        on: (ev,fn) -> return @__emitter.on(ev,fn)
+      ld = new DeviceWrapper testDevice
+      ld.on 'notify', (event, args) ->
+        event.should.equal 'e1'
+        args.should.equal 'a'
+        done();
+
+      testDevice.__emitter.emit 'e1', 'a'
+
+
   describe 'describe()', ->
     it 'returns device schema', ->
       testSchema =

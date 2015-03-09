@@ -16,8 +16,8 @@ describe 'ProxyWrapper module', ->
         invoke: ->
         describe: ->
         config: ->
-        __emitter: new EventEmitter
-        on: (ev, fn) -> return this.__emitter.on(ev,fn)
+        __emitter: new EventEmitter()
+        on: (ev, fn) -> @__emitter.on(ev,fn)
 
       testSchema =
         properties: {
@@ -50,8 +50,8 @@ describe 'ProxyWrapper module', ->
       proxy.should.contain.stringProp
       proxy.should.contain.booleanProp
 
-    it 'should publish events from schema', ->
-      proxy.on 'swoosh', ->
+    it 'should publish events from schema', (done) ->
+      proxy.on 'swoosh', () ->
         done()
       mockLocalDeviceProxy.__emitter.emit('notify', 'swoosh', [])
 

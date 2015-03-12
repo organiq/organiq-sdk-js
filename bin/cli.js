@@ -59,11 +59,7 @@ function _getLocalExternalIPAddress() {
     return ip;
 }
 
-if ( process.argv[0] === 'node' ) {
-  process.argv.shift();
-}
-
-if ( process.argv.length < 2 ) {
+if ( argv._.length < 1 ) {
   console.log("organiq v"+VERSION+" - Command Line Interface to Organiq");
   console.log("usage: organiq <command> [args]");
   console.log("");
@@ -77,7 +73,7 @@ if ( process.argv.length < 2 ) {
 }
 
 
-var command = process.argv[1];
+var command = argv._[0];
 switch( command ) {
   case 'init':
     var useLocalDevServer = argv['local-dev'];
@@ -95,11 +91,11 @@ switch( command ) {
     writePackageData(apiRoot);
     break;
   case 'server':
-    if (process.argv.length < 3) {
+    if (argv._.length < 2) {
       console.log("'server' requires subcommand.");
       return;
     }
-    var subcommand = process.argv[2];
+    var subcommand = argv._[1];
     switch(subcommand) {
       case 'start':
         var port = argv['port'] || 1340;

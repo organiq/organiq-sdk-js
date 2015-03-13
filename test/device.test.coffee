@@ -18,7 +18,8 @@ describe 'DeviceWrapper', ->
         prop: true
         events: ['going', 'gone']
         __emitter: new EventEmitter
-        on: () -> return this.__emitter.on.apply(this,arguments)
+        on: () -> @__emitter.on.apply(this, arguments)
+        emit: () -> @__emitter.emit.apply(this, arguments)
 
     it 'should always invoke as constructor', ->
       ld = new DeviceWrapper testDevice
@@ -42,6 +43,7 @@ describe 'DeviceWrapper', ->
   # constructor.
   describe 'schema handling', ->
     testDevice = null
+    testSchema = null
     ld = null
     spyOn = null
 
@@ -72,7 +74,8 @@ describe 'DeviceWrapper', ->
         ignoredFunc: (x) -> return x
 
         __emitter: new EventEmitter
-        on: (ev, fn) -> return this.__emitter.on(ev,fn)
+        on: () -> @__emitter.on.apply(this, arguments)
+        emit: () -> @__emitter.emit.apply(this, arguments)
 
       spyOn = sinon.spy testDevice, 'on'
       ld = new DeviceWrapper testDevice, testSchema
@@ -110,7 +113,7 @@ describe 'DeviceWrapper', ->
         args.should.deep.equal { apple: 'red', banana: 'yellow' }
         done()
 
-      testDevice.__emitter.emit 'swoosh', { apple: 'red', banana: 'yellow' }
+      testDevice.emit 'swoosh', { apple: 'red', banana: 'yellow' }
 
     # If a device implementation does not have an explicit declaration of a
     # property defined in the schema, it should get one created.
@@ -132,22 +135,38 @@ describe 'DeviceWrapper', ->
 
     # if a property/method/event is not present in the schema, it should fail
     # when we try to access it through the wrapper.
-    it 'does not map ignored props/methods/events', (done) ->
+    it 'does not map props/methods not in schema', ->
       (-> ld.get 'ignoredProp').should.throw /invalid/
       (-> ld.get 'ignoredString').should.throw /invalid/
       (-> ld.invoke 'ignoredFunc').should.throw /invalid/
 
+    it 'fires events not in schema if strictSchema disabled', (done) ->
+      # If strictSchema is disabled (the default), then even events that are not
+      # defined in the schema will be sent to notify()
+      ld.on 'notify', (event, args) ->
+        event.should.equal 'undeclaredEvent'
+        args.should.deep.equal { IDo: 'see this' }
+        done()
+
+      testDevice.emit 'undeclaredEvent', { IDo: 'see this' }
+
+    it 'does not map events not in schema if strictSchema enabled', (done) ->
+      # When strictSchema is enabled, we should not surface any events that were
+      # not declared explicitly in the schema.
+
+      # Make a new device wrapper that has strictSchema
+      testDevice =
+        foo: ->
+      ld = new DeviceWrapper testDevice, {}, { strictSchema: true }
       # Make sure ignoredEvent is not fired. We do this by emitting
       # another event right after ignoredEvent and making sure that when the
       # second event's handler is called we hadn't seen the first.
       ld.on 'notify', (event, args) ->
         event.should.not.equal 'ignoredEvent' # it will be 'swoosh'
-        testDevice.on.should.not.have.been.calledWith 'ignoredEvent'
         done()
 
-      testDevice.__emitter.emit 'ignoredEvent', { IDoNot: 'see this' }
-      testDevice.__emitter.emit 'swoosh', { apple: 'red', banana: 'yellow' }
-
+      testDevice.emit 'ignoredEvent', { IDoNot: 'see this' }
+      ld.emit 'notify', 'swoosh', [{ apple: 'red', banana: 'yellow' }]
 
   describe 'property validation', ->
     ld = null
@@ -245,15 +264,15 @@ describe 'DeviceWrapper', ->
       testDevice =
         events: ['e1']
         __emitter: new EventEmitter
-        on: (ev,fn) -> return @__emitter.on(ev,fn)
+        on: () -> @__emitter.on.apply(this, arguments)
+        emit: () -> @__emitter.emit.apply(this, arguments)
       ld = new DeviceWrapper testDevice
       ld.on 'notify', (event, args) ->
         event.should.equal 'e1'
         args.should.equal 'a'
         done();
 
-      testDevice.__emitter.emit 'e1', 'a'
-
+      testDevice.emit 'e1', 'a'
 
   describe 'describe()', ->
     it 'returns device schema', ->

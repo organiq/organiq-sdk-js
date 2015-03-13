@@ -7,7 +7,7 @@ var Router = require('./gateway.js');
 
 var VERSION = require('../package.json').version;
 
-// The default apiRoot is 'http://api.organiq.io'. We look for an override
+// The default apiRoot is 'ws://api.organiq.io'. We look for an override
 // in the following places:
 //    `--apiRoot` command line option
 //    `apiRoot` property of organiq.json in current directory
@@ -35,7 +35,7 @@ function getApiRoot() {
   var apiRoot = argv['apiRoot'] || argv['a'];
   if (!apiRoot) { apiRoot = readPackageData()['apiRoot']; }
   if (!apiRoot) { apiRoot = process.env.ORGANIQ_APIROOT; }
-  if (!apiRoot) { apiRoot = 'http://api.organiq.io'; }
+  if (!apiRoot) { apiRoot = 'ws://api.organiq.io'; }
   return apiRoot;
 }
 
@@ -81,7 +81,7 @@ switch( command ) {
       // find an external IPv4 address for the local host
       var ip = _getLocalExternalIPAddress();
       if (ip) {
-        apiRoot = 'http://' + ip + ':1340';
+        apiRoot = 'ws://' + ip + ':1340';
         console.log('Initialized organiq.json with API root: ' + apiRoot);
       } else {
         console.error('Unable to determine external IP address. Use --api-root to specify it explicitly.');

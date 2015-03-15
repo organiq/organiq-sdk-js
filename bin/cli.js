@@ -17,7 +17,8 @@ var optionsPath = './organiq.json';
 var _packageData = null;
 function writePackageData(apiRoot) {
   var packageData = {
-    'apiRoot': apiRoot
+    'apiRoot': apiRoot,
+    'namespace': defaultNamespace
   };
   var s = JSON.stringify(packageData, null, 4);
   fs.writeFileSync(optionsPath, s);
@@ -40,6 +41,7 @@ function getApiRoot() {
 }
 
 var apiRoot = getApiRoot();
+var defaultNamespace = '.';
 
 function _getLocalExternalIPAddress() {
     var os = require('os');

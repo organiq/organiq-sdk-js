@@ -1,6 +1,6 @@
 {
   "name": "organiq-tessel",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "JavaScript library for Organiq on Tessel.",
   "main": "index.js",
   "scripts": {},
@@ -19,7 +19,7 @@
   "dependencies": {
     "debug": "^2.1.2",
     "nodejs-websocket": "^1.2.0",
-    "organiq-core": "organiq/organiq-core.git#v0.2.0",
+    "organiq-core": "organiq/organiq-core.git#v0.2.1",
     "when": "^3.7.2"
   }
 }

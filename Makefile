@@ -10,5 +10,5 @@ tessel:
 	cp ./README.md ./package-tessel/
 
 browserify:
-	browserify -r ./lib/index.js:organiq -o build/organiq.js
+	browserify -r ./lib/index.js:organiq --exclude ./package.json --exclude nodejs-websocket -o build/organiq.js
 

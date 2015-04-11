@@ -143,7 +143,7 @@ describe 'SDK Local Round Trip', ->
     dw = new DeviceWrapper nativeDevice
     app.register 'my-device-id', dw
     proxy_ = app.connect 'my-device-id'
-    return proxy_.describe('schema').then (schema) ->
+    return proxy_.describe('.schema').then (schema) ->
       proxy = new ProxyWrapper schema, proxy_
 
   afterEach ->

@@ -292,7 +292,7 @@ describe 'DeviceWrapper', ->
       testDevice = { f: -> }
 
       ld = new DeviceWrapper testDevice, testSchema
-      s = ld.describe('schema')
+      s = ld.describe('.schema')
       s.should.deep.equal testSchema
 
 

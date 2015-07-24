@@ -1,4 +1,4 @@
-DeviceWrapper = require '../lib/device'
+DeviceWrapper = require '../lib/deviceWrapper'
 util = require('util')
 EventEmitter = require('events').EventEmitter
 

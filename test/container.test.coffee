@@ -41,7 +41,7 @@ describe 'registerDevice', ->
   it 'should pass strictSchema to DeviceWrapper constructor', ->
     # This rewire library is handy for stubbing out local variables in a module,
     # but it's dangerous b/c you have to be sure to clean up when done.
-    Device = require '../lib/device.js'
+    Device = require '../lib/deviceWrapper.js'
     spy = sinon.spy Device
     revert = Container.__set__ 'Device', spy
 

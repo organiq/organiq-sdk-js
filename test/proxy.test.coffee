@@ -1,4 +1,4 @@
-ProxyWrapper = require '../lib/proxy'
+ProxyWrapper = require '../lib/proxyWrapper'
 util = require('util')
 EventEmitter = require('events').EventEmitter
 

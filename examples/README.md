@@ -1,7 +1,7 @@
-Copyright (c) 2014 Myk Willis & Company, LLC. All Rights Reserved.
+Copyright (c) 2015 Organiq, Inc. All Rights Reserved.
 
 # Organiq Node.js Example Projects
 
-This folder contains example code for using Organiq in Node.js applications, including Tessel microcontrollers.
+This folder contains example code for using Organiq in Node.js applications.
 
-* blink - Blink a device LED remotely
+* allinone - Demonstrates creation of Device, Driver, and Client in a single application.

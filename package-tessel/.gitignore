@@ -1,4 +1,0 @@
-# From this directory only, ignore .JS files as we copy them in as
-# part of the `bundle`
-*.js
-README.md

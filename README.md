@@ -3,10 +3,9 @@
 
 Organiq is a platform for developing applications that interact with the real world.
 
-The Organiq Software Development Kit (SDK) for JavaScript contains library code, utilities, and examples designed to enable developers to build applications using Organiq and JavaScript. This SDK supports both server- and client-side JavaScript, including support for Tessel microcontrollers.
+The Organiq Software Development Kit (SDK) for JavaScript contains library code, utilities, and examples designed to enable developers to build applications using Organiq and JavaScript. This SDK supports both server- and client-side JavaScript.
 
     npm install -g organiq            # to install on development machine
-    npm install organiq-tessel --save # to install into a Tessel app's package.json
 
 ### Quick Peek
 
@@ -36,5 +35,5 @@ See <http://organiq-tessel.readthedocs.org/en/latest/> for documentation on usin
 
 
 
-Copyright (c) 2015 Myk Willis & Company, LLC. All Rights Reserved.
+Copyright (c) 2015 Organiq, Inc. All Rights Reserved.
 

@@ -1,5 +1,10 @@
 # Organiq SDK for JavaScript - Change Log
 
+## v0.4.1
+ * Significant rewrite/refactor to remove shared organiq-core dependency
+ * Authentication enforced for gateway connections
+ * Updated CLI supports account registration, token generation
+
 ## v0.2.1
  * FIX: organiq init --local-dev now uses 'ws' prefix instead of 'http' for
         apiRoot.

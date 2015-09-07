@@ -31,10 +31,13 @@ var device = {
   _pressed: false,
   get buttonState() { return this._pressed; },
   set buttonState(pressed) { this._pressed = !!pressed },
-  pressButton: function() { this.buttonState = true; this.emit('buttonPress', true); },
-  releaseButton: function() { this.buttonState = false; this.emit('buttonReleas', false); }
+  pressButton: function() { this.buttonState = true; this.emit('buttonPress', true); return this.buttonState; },
+  releaseButton: function() { this.buttonState = false; this.emit('buttonReleas', false); return this.buttonState; }
 };
-organiq.registerDevice('Demo Device', device);
+var promisedRegistration = organiq.registerDevice('Demo Device', device)
+  .then(function(deviceid) {
+    console.log('Registered device with deviceid: ' + deviceid);
+  });
 
 
 /**
@@ -75,4 +78,6 @@ function client(device) {
   device.pressButton();
   device.releaseButton();
 }
-organiq.getDevice('Demo Device').then(client);
+promisedRegistration.then(function() {
+  organiq.getDevice('Demo Device').then(client);
+});

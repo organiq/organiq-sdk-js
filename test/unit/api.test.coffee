@@ -33,6 +33,6 @@ describe 'Organiq', ->
       spy.should.have.been.calledWith 'put'
 
   describe 'deregister', ->
-    it 'should reject for unregistered device', ->
-      o.deregister(testDeviceId).should.be.rejectedWith Error
+    it 'should throw for unregistered device', ->
+      (->o.deregister(testDeviceId)).should.throw(Error)
 

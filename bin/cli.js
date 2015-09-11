@@ -233,6 +233,16 @@ switch( command ) {
       console.log(result);
     });
     break;
+  case 'get-device-id':
+    _getDeviceByAlias(function(err, result) {
+      if (err) {
+        console.log('Failed to find device.'.red);
+        console.log(err);
+        return -1;
+      }
+      console.log(result);
+    });
+    break;
 
 
   default:
@@ -412,10 +422,6 @@ function _generateApiKey(callback)  {
     prompt.message  = "organiq".white.bold;
     prompt.override = argv;
 
-    if (apiKeyId && apiKeySecret) {
-      argv['email'] = apiKeyId;
-      argv['password'] = apiKeySecret;
-    }
     prompt.get(schema, function(err, result) {
       var options = {
         username: apiKeyId,
@@ -436,6 +442,44 @@ function _generateApiKey(callback)  {
           return callback(Error(_responseToText(data, response)))
         }
         callback(null, data);
+      });
+  });
+}
+
+function _getDeviceByAlias(callback)  {
+  var schema = {
+    properties: {
+      alias: {
+        message: 'Device alias (friendly name)',
+        required: true
+      }
+    }
+  };
+
+  prompt.message  = "organiq".white.bold;
+  prompt.override = argv;
+
+  prompt.get(schema, function(err, result) {
+    var options = {
+      username: apiKeyId,
+      password: apiKeySecret
+    };
+
+    rest.get(getApiRoot() + '/devices/?alias=' + result.alias, options).on('complete',
+      function(data, response) {
+        if (data instanceof Error) {
+          return callback(data);
+        }
+        if (response.statusCode !== 200) {
+          return callback(Error(_responseToText(data, response)))
+        }
+        if (data.length < 1) {
+          return callback(Error('Not Found'));
+        }
+
+        // we get back an array with exactly one element (alias is unique for
+        // a user account)
+        callback(null, data[0]['device_id']);
       });
   });
 }

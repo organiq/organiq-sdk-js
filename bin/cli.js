@@ -26,8 +26,7 @@ function writePackageData(apiRoot, dpiRoot, apiKeyId, apiKeySecret, global) {
   var optionsPath = global ? _globalOptionsPath : _optionsPath;
   var packageData = {
     'apiRoot': apiRoot,
-    'dpiRoot': dpiRoot,
-    'namespace': defaultNamespace
+    'dpiRoot': dpiRoot
   };
   if (apiKeyId) {
     packageData['apiKeyId'] = apiKeyId;
@@ -91,7 +90,6 @@ var apiRoot = getApiRoot();
 var dpiRoot = getDpiRoot();
 var apiKeyId = getApiKeyId();
 var apiKeySecret = getApiKeySecret();
-var defaultNamespace = '.';
 
 function _getLocalExternalIPAddress() {
     var os = require('os');

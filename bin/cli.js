@@ -26,8 +26,7 @@ function writePackageData(apiRoot, dpiRoot, apiKeyId, apiKeySecret, global) {
   var optionsPath = global ? _globalOptionsPath : _optionsPath;
   var packageData = {
     'apiRoot': apiRoot,
-    'dpiRoot': dpiRoot,
-    'namespace': defaultNamespace
+    'dpiRoot': dpiRoot
   };
   if (apiKeyId) {
     packageData['apiKeyId'] = apiKeyId;
@@ -91,7 +90,6 @@ var apiRoot = getApiRoot();
 var dpiRoot = getDpiRoot();
 var apiKeyId = getApiKeyId();
 var apiKeySecret = getApiKeySecret();
-var defaultNamespace = '.';
 
 function _getLocalExternalIPAddress() {
     var os = require('os');
@@ -121,6 +119,7 @@ if ( argv._.length < 1 ) {
   console.log("  register - create an Organiq user account.");
   console.log("  generate-api-key - generate an API key id and secret.");
   console.log("  get-account-info - get information about the current user.");
+  console.log("  current-key      - dump current API key id and secret to stdout.");
   console.log("");
   console.log("APIROOT:       '" + apiRoot + "'");
   console.log("DPIROOT:       '" + dpiRoot + "'");
@@ -173,7 +172,7 @@ switch( command ) {
       });
     }
 
-    if (!apiKeyId || !apiKeySecret) {
+    if (!generateNewAccessKey && (!apiKeyId || !apiKeySecret)) {
       console.log("Warning! No APIKEY information found.");
       console.log("Use `organiq init --generate-api-key` to generate one.")
     }
@@ -190,7 +189,11 @@ switch( command ) {
     break;
   case 'generate-api-key':
     _generateApiKey(function(err, result) {
-      if (err) { console.log('Failed to get API Key.'.red); console.log(err); return -1; }
+      if (err) {
+        console.log('Failed to get API Key.'.red);
+        console.log(err);
+        return -1;
+      }
       if (argv['global']) {
         writePackageData(
           readPackageData(true)['apiRoot'],
@@ -209,6 +212,33 @@ switch( command ) {
     _getAccountInfo(function(err, result) {
       if (err) {
         console.log('Failed to get account information.'.red);
+        console.log(err);
+        return -1;
+      }
+      console.log(result);
+    });
+    break;
+  case 'current-key':
+    if (!apiKeyId || !apiKeySecret) {
+      console.log('There is no active API Key.');
+      return -1;
+    }
+    console.log(apiKeyId + ":" + apiKeySecret);
+    break;
+  case 'activate-device':
+    _activateDevice(function(err, result) {
+      if (err) {
+        console.log('Failed to activate device.'.red);
+        console.log(err);
+        return -1;
+      }
+      console.log(result);
+    });
+    break;
+  case 'get-device-id':
+    _getDeviceByAlias(function(err, result) {
+      if (err) {
+        console.log('Failed to find device.'.red);
         console.log(err);
         return -1;
       }
@@ -325,31 +355,105 @@ function _generateApiKey(callback)  {
       password: result.password
     };
 
-    rest.postJson(getApiRoot() + '/apikeys/', data, options).on('complete',
+      rest.postJson(getApiRoot() + '/apikeys/', data, options).on('complete',
+        function(data, response) {
+          if (data instanceof Error) {
+            return callback(data);
+          }
+          if (response.statusCode !== 201) {
+            return callback(Error(_responseToText(data, response)));
+          }
+          callback(null, data);
+        });
+    });
+  }
+
+  function _getAccountInfo(callback)  {
+    var schema = {
+      properties: {
+        email: {
+          message: '     Email address',
+          required: true,
+          validator: /^.+@.+\..+$/,
+          warning: 'Please enter a valid email address (you@example.com)'
+        },
+        password: {
+          message: '    Enter password',
+          hidden: true
+        }
+      }
+    };
+
+    prompt.message  = "organiq".white.bold;
+    prompt.override = argv;
+
+    if (apiKeyId && apiKeySecret) {
+      argv['email'] = apiKeyId;
+      argv['password'] = apiKeySecret;
+      delete schema.properties.email.validator;
+    }
+    prompt.get(schema, function(err, result) {
+      var options = {
+        username: result.email,
+        password: result.password
+      };
+
+      rest.get(getApiRoot() + '/current_user/', options).on('complete',
+        function(data, response) {
+          if (data instanceof Error) {
+            return callback(data);
+          }
+          if (response.statusCode !== 200) {
+            return callback(Error(_responseToText(data, response)))
+          }
+          callback(null, data);
+        });
+    });
+  }
+
+  function _activateDevice(callback)  {
+    var schema = {
+      properties: {
+        alias: {
+          message: 'Device alias',
+          required: true
+        }
+      }
+    };
+
+    prompt.message  = "organiq".white.bold;
+    prompt.override = argv;
+
+    prompt.get(schema, function(err, result) {
+      var options = {
+        username: apiKeyId,
+        password: apiKeySecret
+      };
+
+      var data = {
+        alias: result.alias,
+        class_id: "",
+        version: "0.0.0"
+      };
+      rest.postJson(getApiRoot() + '/devices/', data, options).on('complete',
       function(data, response) {
         if (data instanceof Error) {
           return callback(data);
         }
-        if (response.statusCode !== 201) {
-          callback(Error(_responseToText(data, response)));
+        if (response.statusCode !== 200) {
+          return callback(Error(_responseToText(data, response)))
         }
         callback(null, data);
       });
   });
 }
 
-function _getAccountInfo(callback)  {
+function _getDeviceByAlias(callback)  {
   var schema = {
     properties: {
-      email: {
-        message: '     Email address',
-        required: true,
-        validator: /^.+@.+\..+$/,
-        warning: 'Please enter a valid email address (you@example.com)'
-      },
-      password: {
-        message: '    Enter password',
-        hidden: true
+      alias: {
+        message: 'Device alias (friendly name)',
+        required: true
       }
     }
   };
@@ -357,26 +461,27 @@ function _getAccountInfo(callback)  {
   prompt.message  = "organiq".white.bold;
   prompt.override = argv;
 
-  if (apiKeyId && apiKeySecret) {
-    argv['email'] = apiKeyId;
-    argv['password'] = apiKeySecret;
-    delete schema.properties.email.validator;
-  }
   prompt.get(schema, function(err, result) {
     var options = {
-      username: result.email,
-      password: result.password
+      username: apiKeyId,
+      password: apiKeySecret
     };
 
-    rest.get(getApiRoot() + '/current_user/', options).on('complete',
+    rest.get(getApiRoot() + '/devices/?alias=' + result.alias, options).on('complete',
       function(data, response) {
         if (data instanceof Error) {
           return callback(data);
         }
         if (response.statusCode !== 200) {
-          callback(Error(_responseToText(data, response)))
+          return callback(Error(_responseToText(data, response)))
         }
-        callback(null, data);
+        if (data.length < 1) {
+          return callback(Error('Not Found'));
+        }
+
+        // we get back an array with exactly one element (alias is unique for
+        // a user account)
+        callback(null, data[0]['device_id']);
       });
   });
 }
@@ -389,6 +494,11 @@ function _responseToText(data, response) {
     if (typeof data['email'] !== 'undefined') {
       if (/This field must be unique/.test(data.email[0])) {
         return 'An account with the supplied email already exists.';
+      }
+    }
+    else if (typeof data['non_field_errors'] !== 'undefined') {
+      if (/The fields user, alias must make a unique set\./.test(data.non_field_errors[0])) {
+        return 'A device with the provided alias already exists.';
       }
     }
   }

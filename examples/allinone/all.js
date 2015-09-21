@@ -31,10 +31,13 @@ var device = {
   _pressed: false,
   get buttonState() { return this._pressed; },
   set buttonState(pressed) { this._pressed = !!pressed },
-  pressButton: function() { this.buttonState = true; this.emit('buttonPress', true); },
-  releaseButton: function() { this.buttonState = false; this.emit('buttonReleas', false); }
+  pressButton: function() { this.buttonState = true; this.emit('buttonPress', true); return this.buttonState; },
+  releaseButton: function() { this.buttonState = false; this.emit('buttonReleas', false); return this.buttonState; }
 };
-organiq.registerDevice('Demo Device', device);
+var promisedRegistration = organiq.registerDevice('Demo Device', device)
+  .then(function(deviceid) {
+    console.log('device: Registered ' + deviceid);
+  });
 
 
 /**
@@ -45,12 +48,12 @@ organiq.registerDevice('Demo Device', device);
  * on client nodes as well.
  */
 var driver = function(req, next) {
-  console.log('driver called: ' + req.method + ' ' + req.identifier);
+  console.log('driver: ' + req.method + ' ' + req.identifier);
   // In this example, our "device" has a bug - 'buttonRelease' is misspelled.
   // We look for cases where the device emits this misspelled event, and fix it
   // up so that clients will see the appropriate event name.
   if (req.method === 'NOTIFY' && req.identifier === 'buttonReleas') {
-    console.log('fixing event name');
+    console.log('driver: fixing event name');
     req.identifier = 'buttonRelease';
   }
   return next();  // normally, next invokes the underlying device implementation
@@ -66,13 +69,15 @@ organiq.installDriver('Demo Device', driver);
  */
 function client(device) {
   device.on('buttonPress', function() {
-    console.log('Button was pressed.');
+    console.log('client: Button was pressed.');
   });
   device.on('buttonRelease', function() {
-    console.log('Button was released.');
+    console.log('client: Button was released.');
   });
 
   device.pressButton();
   device.releaseButton();
 }
-organiq.getDevice('Demo Device').then(client);
+promisedRegistration.then(function() {
+  organiq.getDevice('Demo Device').then(client);
+});

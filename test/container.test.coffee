@@ -15,9 +15,9 @@ describe 'OrganiqContainer constructor', ->
 
 describe 'Singleton behavior', ->
   it 'should have API methods', ->
-#    Container.should.have.property 'connect'
     Container.should.have.property 'registerDevice'
     Container.should.have.property 'getDevice'
+    Container.should.have.property 'installDriver'
 
 describe 'registerDevice', ->
   it 'should pass calls without schema by default', ->

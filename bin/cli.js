@@ -189,7 +189,11 @@ switch( command ) {
     break;
   case 'generate-api-key':
     _generateApiKey(function(err, result) {
-      if (err) { console.log('Failed to get API Key.'.red); console.log(err); return -1; }
+      if (err) {
+        console.log('Failed to get API Key.'.red);
+        console.log(err);
+        return -1;
+      }
       if (argv['global']) {
         writePackageData(
           readPackageData(true)['apiRoot'],
@@ -357,7 +361,7 @@ function _generateApiKey(callback)  {
             return callback(data);
           }
           if (response.statusCode !== 201) {
-            callback(Error(_responseToText(data, response)));
+            return callback(Error(_responseToText(data, response)));
           }
           callback(null, data);
         });

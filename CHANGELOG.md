@@ -1,5 +1,11 @@
 # Organiq SDK for JavaScript - Change Log
 
+## v0.4.4
+ * Pass REGISTER/DEREGISTER through to driver middleware
+
+## v0.4.3
+ * Auto-activation of devices via alias
+
 ## v0.4.1
  * Significant rewrite/refactor to remove shared organiq-core dependency
  * Authentication enforced for gateway connections

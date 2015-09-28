@@ -1,6 +1,6 @@
 {
   "name": "organiq",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Organiq SDK for JavaScript.",
   "main": "./lib/index.js",
   "bin": {

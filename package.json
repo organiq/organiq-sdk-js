@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jshint ./lib && mocha",
     "lint": "jshint ./lib",
-    "browserify": "browserify -x ws -r ./lib/index.js:organiq -o organiq.js",
+    "browserify": "browserify -x ws -r ./lib/index.js:organiq -o build/organiq.js",
     "t": "mocha"
   },
   "repository": {

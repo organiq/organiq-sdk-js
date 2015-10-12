@@ -1,5 +1,8 @@
 # Organiq SDK for JavaScript - Change Log
 
+## v0.4.5
+ * Move DEFAULT_APIROOT to https://api.organiq.io/api/v0
+
 ## v0.4.4
  * Pass REGISTER/DEREGISTER through to driver middleware
 

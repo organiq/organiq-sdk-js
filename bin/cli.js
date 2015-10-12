@@ -55,7 +55,7 @@ function getApiRoot() {
   if (!apiRoot) { apiRoot = readPackageData()['apiRoot']; }
   if (!apiRoot) { apiRoot = process.env.ORGANIQ_APIROOT; }
   if (!apiRoot) { apiRoot = readPackageData(true)['apiRoot']; }
-  if (!apiRoot) { apiRoot = 'https://api.organiq.io'; }
+  if (!apiRoot) { apiRoot = 'https://api.organiq.io/api/v0'; }
   return apiRoot;
 }
 

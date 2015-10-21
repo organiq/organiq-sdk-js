@@ -1,5 +1,9 @@
 # Organiq SDK for JavaScript - Change Log
 
+## v0.4.6
+ * Add .gitattributes to normalize line endings
+ * Move cli.js dependencies to `dependencies` rather than `devDependencies`
+
 ## v0.4.5
  * Move DEFAULT_APIROOT to https://api.organiq.io/api/v0
 

@@ -5,7 +5,8 @@ Organiq is a platform for developing applications that interact with the real wo
 
 The Organiq Software Development Kit (SDK) for JavaScript contains library code, utilities, and examples designed to enable developers to build applications using Organiq and JavaScript. This SDK supports both server- and client-side JavaScript.
 
-    npm install -g organiq              # install on development machine
+    npm install --save organiq          # install into your project
+    npm install --global organiq-cli    # install the command line interface
     organiq register                    # register an Organiq account
     organiq generate-api-key --global   # get an API key 
 

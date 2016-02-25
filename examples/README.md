@@ -5,3 +5,4 @@ Copyright (c) 2015 Organiq, Inc. All Rights Reserved.
 This folder contains example code for using Organiq in Node.js applications.
 
 * allinone - Demonstrates creation of Device, Driver, and Client in a single application.
+* organiq-raspberry - Demonstrates using organiq to control a raspberry pi's GPIO remotely
